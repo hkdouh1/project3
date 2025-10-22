@@ -26,7 +26,6 @@ public class MonopolyGUI extends Application {
     private HashMap<String, ArrayList<Integer>> colorGroups;
     private Font customFont;
 
-    // UI Components
     private Label currentPlayerLabel;
     private Label moneyLabel;
     private Label locationLabel;
@@ -41,7 +40,7 @@ public class MonopolyGUI extends Application {
     private ListView<String> propertiesList;
     private Label cardLabel;
 
-    // Chance & Community Chest
+    
     private final ArrayList<String> chanceDeck = new ArrayList<>(Arrays.asList(
             "Advance to GO (Collect $200)", "Bank error in your favor, collect $200", "Doctor's fees, pay $50",
             "Get out of Jail Free", "Go to Jail, go directly to Jail", "Pay poor tax of $15",
@@ -64,7 +63,7 @@ public class MonopolyGUI extends Application {
         this.propertySpaces = new ArrayList<>();
         this.colorGroups = initColorGroups();
 
-        // Use default font instead
+        
         this.customFont = Font.font("Arial", 18);
 
         shuffleDecks();
@@ -197,35 +196,35 @@ public class MonopolyGUI extends Application {
         boardGrid.setHgap(3);
         boardGrid.setVgap(3);
 
-        // Bottom row (positions 0-10)
+        
         for (int i = 0; i <= 10; i++) {
             VBox space = createPropertySpace(i);
             propertySpaces.add(space);
             boardGrid.add(space, 10 - i, 10);
         }
 
-        // Left column (positions 11-19)
+      
         for (int i = 11; i < 20; i++) {
             VBox space = createPropertySpace(i);
             propertySpaces.add(space);
             boardGrid.add(space, 0, 20 - i);
         }
 
-        // Top row (positions 20-30)
+
         for (int i = 20; i <= 30; i++) {
             VBox space = createPropertySpace(i);
             propertySpaces.add(space);
             boardGrid.add(space, i - 20, 0);
         }
 
-        // RIGHT COLUMN (positions 31-39) <--- ADD THIS SECTION!
+    
         for (int i = 31; i < 40; i++) {
             VBox space = createPropertySpace(i);
             propertySpaces.add(space);
             boardGrid.add(space, 10, i - 30);
         }
 
-        // Center area
+ 
         VBox centerArea = new VBox(15);
         centerArea.setAlignment(Pos.CENTER);
         centerArea.setStyle("-fx-background-color: #1a472a; -fx-padding: 30;");
@@ -263,30 +262,30 @@ public class MonopolyGUI extends Application {
 
         property prop = board.getPropertyAt(position);
 
-        // Color bar
+
         Rectangle colorBar = new Rectangle(60, 20);
         colorBar.setFill(getPropertyColor(position));
 
-        // Property name
+
         Label nameLabel = new Label(prop.getName());
         nameLabel.setFont(Font.font(customFont.getFamily(), FontWeight.BOLD, 8));
         nameLabel.setWrapText(true);
         nameLabel.setMaxWidth(60);
         nameLabel.setAlignment(Pos.CENTER);
 
-        // Price
+
         Label priceLabel = new Label("");
         if (prop.getPurchasePrice() > 0) {
             priceLabel.setText("$" + prop.getPurchasePrice());
             priceLabel.setFont(Font.font(customFont.getFamily(), 8));
         }
 
-        // Houses/Hotels indicator
+ 
         HBox buildingsArea = new HBox(2);
         buildingsArea.setAlignment(Pos.CENTER);
         buildingsArea.setMinHeight(15);
 
-        // Player tokens area
+
         HBox tokensArea = new HBox(2);
         tokensArea.setAlignment(Pos.CENTER);
         tokensArea.setMinHeight(20);
@@ -428,10 +427,10 @@ public class MonopolyGUI extends Application {
         property currentProperty = board.getPropertyAt(newLocation);
         logMessage("You landed on: " + currentProperty.getName());
 
-        // Check for special spaces
+     
         handleSpecialSpaces(newLocation, currentPlayer);
 
-        // Handle property logic
+ 
         if (currentProperty.getPurchasePrice() > 0) {
             if (currentProperty.getOwner().equals("unowned")) {
                 logMessage("This property costs $" + currentProperty.getPurchasePrice());
@@ -580,7 +579,7 @@ public class MonopolyGUI extends Application {
     private void buildHouse() {
         player currentPlayer = board.getPlayers().get(currentPlayerIndex);
 
-        // Get properties player owns that can have houses
+   
         ArrayList<property> eligibleProps = new ArrayList<>();
         for (property prop : board.getProperties()) {
             if (prop.getOwner().equals(currentPlayer.getName()) &&
@@ -597,7 +596,7 @@ public class MonopolyGUI extends Application {
             return;
         }
 
-        // Create choice dialog
+    
         ArrayList<String> propNames = new ArrayList<>();
         for (property p : eligibleProps) {
             propNames.add(p.getName() + " (" + p.getHouses() + " houses)");
@@ -630,7 +629,7 @@ public class MonopolyGUI extends Application {
         for (Map.Entry<String, ArrayList<Integer>> entry : colorGroups.entrySet()) {
             ArrayList<Integer> positions = entry.getValue();
 
-            // Check if this property is in this color group
+       
             int propPosition = -1;
             for (int i = 0; i < board.getProperties().size(); i++) {
                 if (board.getPropertyAt(i).equals(prop)) {
@@ -640,7 +639,7 @@ public class MonopolyGUI extends Application {
             }
 
             if (positions.contains(propPosition)) {
-                // Check if player owns all in this group
+         
                 for (int pos : positions) {
                     property p = board.getPropertyAt(pos);
                     if (!p.getOwner().equals(plr.getName())) {
@@ -723,7 +722,7 @@ public class MonopolyGUI extends Application {
         property currentProp = board.getPropertyAt(currentPlayer.getLocation());
         locationLabel.setText("Location: " + currentProp.getName() + " (#" + currentPlayer.getLocation() + ")");
 
-        // Update owned properties list
+    
         propertiesList.getItems().clear();
         for (property prop : board.getProperties()) {
             if (prop.getOwner().equals(currentPlayer.getName())) {
@@ -899,21 +898,21 @@ public class MonopolyGUI extends Application {
     }
 
     private Color getPropertyColor(int position) {
-        // Brown: 1, 3
+    
         if (position == 1 || position == 3) return Color.rgb(139, 69, 19);
-        // Light Blue: 6, 8, 9
+    
         if (position == 6 || position == 8 || position == 9) return Color.LIGHTBLUE;
-        // Pink: 11, 13, 14
+    
         if (position == 11 || position == 13 || position == 14) return Color.PINK;
-        // Orange: 16, 18, 19
+    
         if (position == 16 || position == 18 || position == 19) return Color.ORANGE;
-        // Red: 21, 23, 24
+   
         if (position == 21 || position == 23 || position == 24) return Color.RED;
-        // Yellow: 26, 27, 29
+
         if (position == 26 || position == 27 || position == 29) return Color.YELLOW;
-        // Green: 31, 32, 34 (adjusted for 30-space board)
+  
         if (position == 11 || position == 13 || position == 14) return Color.GREEN;
-        // Dark Blue: 37, 39 (adjusted)
+   
         if (position == 1 || position == 3) return Color.DARKBLUE;
 
         return Color.LIGHTGRAY;
@@ -931,3 +930,4 @@ public class MonopolyGUI extends Application {
         launch(args);
     }
 }
+
